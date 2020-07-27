@@ -1,2 +1,10 @@
 ---
 # defaults file for lamp_stack
+######Apache Installation requirement #########
+httpdUsername: apache
+apacheUsername: www-data
+documentRoot: /var/www/html
+#domain for virtual host
+domain_name: domain.com
+#True if subdomain or false
+ifsubdomain: true

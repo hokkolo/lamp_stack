@@ -8,3 +8,26 @@
 - name: Enable apache rewrite
   apache2_module: name=rewrite state=present
   notify: restart apache 
+
+- name: Add Virtual host 
+  template:
+    src: virtualhost.conf.j2
+    dest: "/etc/apache2/sites-available/{{ domain_name }}.conf"
+    force: no
+
+- name: Enable conf "{{ domain_name }}" in sites-enabled
+  file:
+    src: "/etc/apache2/sites-available/{{ domain_name }}.conf"
+    dest: "/etc/apache2/sites-enabled/{{ domain_name }}.conf"
+    state: link
+  notify: restart apache2
+
+- name: Changing document root folder permission
+  file:
+    path: /var/www/html
+    state: directory
+    recurse: yes
+    owner: "{{ normalUser }}"
+    group: "{{ apacheUsername }}"
+    mode: '0775'
+  notify: restart apache2
